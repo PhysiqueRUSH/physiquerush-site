@@ -222,7 +222,7 @@ section { padding-block: clamp(72px, 11vw, 132px); }
   background: var(--charbon) var(--hachures); border: 1px solid var(--trait);
   display: grid; place-items: center;
 }
-.jerome__photo img:not(.repli) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.jerome__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 38% 50%; }
 .jerome__photo .repli { width: 30%; max-width: 120px; opacity: .85; }
 .jerome .texte { font-size: 20px; }
 .signature { margin-top: 28px; display: flex; align-items: center; gap: 14px; }
@@ -235,6 +235,20 @@ section { padding-block: clamp(72px, 11vw, 132px); }
 .groupe .texte { font-size: 20px; }
 .groupe__tel { width: 300px; margin-inline: auto; }
 .inclus li b { font-weight: 700; color: var(--blanc); }
+
+.resultats { background: var(--noir); }
+.resultats__tete { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: end; margin-bottom: 48px; }
+.resultats__tete p { font-size: 20px; color: #D9D9D5; margin: 0; }
+.resultats__grille { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.resultats__grille img { width: 100%; height: auto; border-radius: 8px; box-shadow: 0 24px 60px -28px rgba(0,0,0,.9); }
+.resultats__note { margin: 18px 0 0; font-size: 13.5px; color: var(--gris); }
+.resultats__cta { margin-top: 40px; text-align: center; }
+.recit { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; margin-top: 64px; }
+.recit .texte { font-size: 20px; }
+.moi { margin: 0; }
+.moi img { width: 100%; height: auto; border-radius: 8px; box-shadow: 0 30px 70px -30px rgba(0,0,0,.95), 0 0 90px -30px rgba(227,181,60,.35); }
+.moi figcaption { margin-top: 14px; font-size: 16px; color: var(--gris); }
+.moi figcaption b { color: var(--blanc); }
 
 /* Pour qui */
 .pourqui { background: var(--noir); }
@@ -350,7 +364,9 @@ section { padding-block: clamp(72px, 11vw, 132px); }
 
 /* Responsive */
 @media (max-width: 980px) {
-  .groupe__grille { grid-template-columns: 1fr; gap: 40px; }
+  .groupe__grille, .resultats__tete, .recit { grid-template-columns: 1fr; gap: 32px; }
+  .recit { margin-top: 48px; }
+  .resultats__tete { margin-bottom: 32px; }
   .groupe__tel { width: 250px; }
   .hero__grille, .probleme__grille, .methode__tete, .positions, .jeu__grille, .jerome__grille, .faq__grille, .pourqui__grille { grid-template-columns: 1fr; }
   .probleme__grille, .jerome__grille, .faq__grille { gap: 36px; }
@@ -391,7 +407,9 @@ section { padding-block: clamp(72px, 11vw, 132px); }
   .hero__visuel .tel--arriere { left: 0; top: 70px; }
   .journee { margin-top: 40px; }
   .entete__lien { font-size: 15px; }
-  .probleme .texte, .methode__tete .texte, .jerome .texte, .groupe .texte { font-size: 18px; }
+  .probleme .texte, .methode__tete .texte, .jerome .texte, .groupe .texte, .recit .texte, .resultats__tete p { font-size: 18px; }
+  .resultats__grille { grid-template-columns: 1fr; gap: 14px; }
+  .resultats__cta .btn { width: 100%; }
   .chute { font-size: 29px; }
   .position { grid-template-columns: 1fr; gap: 8px; padding: 22px 20px; }
   .etapes ol { grid-template-columns: 1fr; gap: 34px; margin-top: 40px; }
@@ -558,6 +576,24 @@ section { padding-block: clamp(72px, 11vw, 132px); }
   </div>
 </section>
 
+<!-- RÉSULTATS -->
+<section class="resultats">
+  <div class="page">
+    <div class="resultats__tete">
+      <h2>Voilà ce que donnent trois mois de méthode, appliquée chaque jour.</h2>
+      <p>Ces hommes ont suivi la méthode avec moi pendant trois mois, tous les jours, avec sérieux et constance. Des contractions maximales glissées dans leurs journées, et voici le résultat.</p>
+    </div>
+    <div class="resultats__grille">
+      <img src="resultat-1.webp" alt="Avant et après trois mois de méthode Iso-IMPACT" width="644" height="503" loading="lazy">
+      <img src="resultat-2.webp" alt="Avant et après trois mois de méthode Iso-IMPACT" width="648" height="503" loading="lazy">
+      <img src="resultat-3.webp" alt="Avant et après trois mois de méthode Iso-IMPACT" width="644" height="504" loading="lazy">
+      <img src="resultat-4.webp" alt="Avant et après trois mois de méthode Iso-IMPACT" width="648" height="504" loading="lazy">
+    </div>
+    <p class="resultats__note">Photos publiées avec l'accord des personnes. Résultats obtenus en 3 mois de pratique quotidienne ; ils varient d'une personne à l'autre.</p>
+    <div class="resultats__cta"><a class="btn" href="#offre">Je commence maintenant</a></div>
+  </div>
+</section>
+
 <!-- FONCTIONS -->
 <section class="fonctions">
   <div class="page">
@@ -635,23 +671,36 @@ section { padding-block: clamp(72px, 11vw, 132px); }
 
 <!-- JÉRÔME -->
 <section class="jerome">
-  <div class="page jerome__grille">
-    <div class="jerome__photo">
-      <img class="repli" src="pr.png" alt="" aria-hidden="true">
-      <img src="jerome.jpg" alt="Jérôme, kiné et coach sportif, créateur d'Iso-IMPACT" loading="lazy" onerror="this.remove()">
+  <div class="page">
+    <div class="jerome__grille">
+      <div class="jerome__photo">
+        <img src="jerome-kine.webp" alt="Jérôme, kinésithérapeute, en séance au cabinet" width="900" height="900" loading="lazy">
+      </div>
+      <div>
+        <h2>Qui suis-je pour te proposer ça ?</h2>
+        <div class="texte" style="margin-top:28px">
+          <p>Je m'appelle Jérôme, j'ai 39 ans. Je suis kinésithérapeute depuis 2014, préparateur physique et judoka de compétition. Mais je suis surtout un père de famille avec des journées bien trop courtes.</p>
+          <p>Entre mes patients, mes enfants, mes responsabilités et mes entraînements, je connais parfaitement cette sensation : vouloir prendre soin de son corps sans avoir le temps de le faire.</p>
+          <p>Et malgré mon expérience sportive, je n'ai pas été épargné par les blessures : tendinopathies, douleurs d'épaule, problèmes de dos…</p>
+        </div>
+      </div>
     </div>
-    <div>
-      <h2>Qui suis-je pour te proposer ça ?</h2>
-      <div class="texte" style="margin-top:28px">
-        <p>Moi, c'est Jérôme. J'ai 39 ans, deux enfants, et sûrement un agenda qui ressemble au tien.</p>
-        <p>Je suis kiné, coach sportif diplômé STAPS, et je pratique le judo. Construire du muscle et remettre sur pied des tendons ou des articulations douloureuses, c'est mon métier.</p>
-        <p>Quand les enfants sont arrivés, j'ai perdu ce que perdent presque tous les pères : du temps, beaucoup de temps. L'envie, elle, était toujours là. Alors j'ai pris l'outil que je maîtrise le mieux, l'isométrie maximale, et je l'ai glissé dans les petits trous de mes journées.</p>
-        <p class="fort">Iso-IMPACT, c'est simplement cette méthode, mise dans ton téléphone.</p>
+
+    <div class="recit">
+      <div class="texte">
+        <p>J'ai alors commencé à remettre en question une idée que tout le monde semblait accepter : pourquoi faudrait-il passer des heures en salle, multiplier les mouvements et s'équiper de matériel pour développer ses muscles ?</p>
+        <p>En croisant mes connaissances de kiné et mon expérience de sportif, je me suis intéressé à une approche aussi simple que radicale : <span class="fort">l'isométrie.</span> Contracter intensément ses muscles, sans soulever de poids, sans même faire de mouvement.</p>
+        <p>Je l'ai d'abord testée sur moi, dans les petits trous de mes journées. Puis je l'ai appliquée avec les hommes que je coache, chaque jour, pendant trois mois.</p>
+        <p class="fort">Iso-IMPACT, c'est cette méthode, mise dans ton téléphone.</p>
+        <div class="signature">
+          <img src="pr.png" alt="" width="40" height="40">
+          <div><b>Jérôme</b><span>Kiné depuis 2014, préparateur physique, fondateur de PhysiqueRUSH</span></div>
+        </div>
       </div>
-      <div class="signature">
-        <img src="pr.png" alt="" width="40" height="40">
-        <div><b>Jérôme</b><span>Kiné et coach sportif, fondateur de PhysiqueRUSH</span></div>
-      </div>
+      <figure class="moi">
+        <img src="jerome-2019-2026.webp" alt="Jérôme torse nu en 2019, à 32 ans, puis en 2026, à 39 ans, nettement plus musclé" width="1000" height="822" loading="lazy">
+        <figcaption>Moi, en 2019 puis en 2026. <b>À 39 ans, plus musclé qu'à 32.</b></figcaption>
+      </figure>
     </div>
   </div>
 </section>
@@ -762,7 +811,7 @@ section { padding-block: clamp(72px, 11vw, 132px); }
     <div>
       <details>
         <summary>Sans charges, est-ce que ça fait vraiment du muscle ?</summary>
-        <p>Oui, parce que ton muscle réagit à la tension qu'il subit, et non à l'objet contre lequel tu pousses. Une contraction maximale tenue sans relâcher combine la tension mécanique et le stress métabolique, les deux moteurs de la prise de muscle. Les études citées sur cette page l'ont mesuré sur des périodes de 6 à 14 semaines.</p>
+        <p>Oui, parce que ton muscle réagit à la tension qu'il subit, et non à l'objet contre lequel tu pousses. Une contraction maximale tenue sans relâcher combine la tension mécanique et le stress métabolique, les deux moteurs de la prise de muscle. Les études citées sur cette page l'ont mesuré sur des périodes de 6 à 14 semaines, et les photos de mes coachés montrent ce que ça donne en 3 mois.</p>
       </details>
       <details>
         <summary>Honnêtement, je n'ai pas le temps.</summary>
@@ -853,6 +902,7 @@ section { padding-block: clamp(72px, 11vw, 132px); }
         <a href="mentions-legales.html">Mentions légales</a>
         <a href="cgv.html">CGV</a>
         <a href="confidentialite.html">Confidentialité</a>
+        <a href="https://billing.stripe.com/p/login/dRm00ibH48tAggk7Ss7kc00">Gérer ou résilier mon abonnement</a>
         <a href="mailto:contact@physiquerush.com">contact@physiquerush.com</a>
         <a href="https://app.physiquerush.com">Se connecter</a>
       </nav>
