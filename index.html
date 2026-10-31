@@ -1,0 +1,889 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Iso-IMPACT : prends du muscle dans les temps morts de ta journée</title>
+<meta name="description" content="L'appli d'isométrie maximale pensée par un kiné pour les hommes qui n'ont plus le temps d'aller en salle. Zéro matériel, zéro trajet. Du muscle dans les petits temps morts de ta journée.">
+<meta name="theme-color" content="#0D0D0D">
+<link rel="icon" href="img/pr.png">
+<link rel="apple-touch-icon" href="img/pr.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Iso-IMPACT : du muscle dans les temps morts de ta journée">
+<meta property="og:description" content="Zéro matériel. Zéro salle. L'isométrie maximale pensée par un kiné, dans ton téléphone.">
+<meta property="og:image" content="https://physiquerush.com/img/og.jpg">
+<meta property="og:url" content="https://physiquerush.com/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="fonts/anton.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face { font-family: "Anton"; src: url(fonts/anton.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Barlow"; src: url(fonts/barlow-400.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Barlow"; src: url(fonts/barlow-500.woff2) format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Barlow"; src: url(fonts/barlow-600.woff2) format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Barlow"; src: url(fonts/barlow-700.woff2) format("woff2"); font-weight: 700; font-display: swap; }
+:root {
+  --noir: #0D0D0D;
+  --charbon: #161616;
+  --trait: #2A2A2A;
+  --rouge: #D32F2F;
+  --rouge-vif: #FF4545;
+  --blanc: #F4F4F2;
+  --gris: #A6A6A2;
+  --or: #E3B53C;
+  --f-titre: "Anton", Impact, "Arial Narrow", sans-serif;
+  --f-texte: "Barlow", "Segoe UI", Roboto, Arial, sans-serif;
+  --page: min(1120px, 100% - 32px);
+  --hachures: repeating-linear-gradient(135deg, rgba(255,255,255,.035) 0 2px, transparent 2px 9px);
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--noir); color: var(--blanc);
+  font: 400 18px/1.6 var(--f-texte); overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--rouge-vif); outline-offset: 3px; border-radius: 4px; }
+.page { width: var(--page); margin-inline: auto; }
+h1, h2, h3 { font-family: var(--f-titre); font-weight: 400; line-height: 1.02; letter-spacing: .005em; margin: 0; text-wrap: balance; }
+h2 { font-size: clamp(38px, 6.2vw, 68px); }
+h3 { font-size: 27px; line-height: 1.1; }
+p { margin: 0 0 1em; }
+.texte { max-width: 62ch; }
+.texte p:last-child { margin-bottom: 0; }
+.fort { color: var(--blanc); font-weight: 700; }
+.muet { color: var(--gris); }
+section { padding-block: clamp(72px, 11vw, 132px); }
+
+/* Références aux études */
+.ref {
+  display: inline-block; font-size: 13px; font-weight: 600; line-height: 1;
+  color: var(--gris); text-decoration: none; white-space: nowrap;
+  padding: 4px 7px; border: 1px solid var(--trait); border-radius: 99px;
+  vertical-align: 2px; margin-left: 2px;
+}
+.ref:hover { color: var(--blanc); border-color: var(--gris); }
+
+/* Boutons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 60px; padding: 0 30px; border: 0; border-radius: 6px;
+  background: var(--rouge); color: #fff; text-decoration: none; cursor: pointer;
+  font: 400 23px/1 var(--f-titre); letter-spacing: .02em;
+  box-shadow: 0 10px 34px -10px rgba(211,47,47,.75), inset 0 -3px 0 rgba(0,0,0,.22);
+  transition: background .15s, transform .15s;
+}
+.btn:hover { background: #E53935; }
+.btn:active { transform: translateY(1px); }
+.btn--creux { background: transparent; border: 2px solid var(--trait); box-shadow: none; }
+.btn--creux:hover { background: var(--charbon); border-color: var(--gris); }
+
+/* En-tête */
+.entete { position: absolute; inset: 0 0 auto; z-index: 5; }
+.entete .page { display: flex; align-items: center; justify-content: space-between; height: 76px; }
+.marque { display: flex; align-items: center; gap: 10px; text-decoration: none; font: 400 22px/1 var(--f-titre); letter-spacing: .03em; }
+.marque img { width: 30px; height: 30px; }
+.marque__nom span { color: var(--rouge-vif); }
+.entete__lien { font-size: 16px; font-weight: 600; color: var(--gris); text-decoration: none; }
+.entete__lien:hover { color: var(--blanc); }
+
+/* Hero */
+.hero { position: relative; padding-top: 128px; padding-bottom: 0; overflow: hidden; }
+.hero::before {
+  content: ""; position: absolute; inset: 0; background: var(--hachures);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 85%); mask-image: linear-gradient(180deg, #000 0%, transparent 85%);
+  pointer-events: none;
+}
+.hero__grille { position: relative; display: grid; grid-template-columns: 1.12fr .88fr; gap: 48px; align-items: center; }
+.hero h1 { font-size: clamp(52px, 8.4vw, 104px); line-height: .95; }
+.hero__lede { font-size: clamp(19px, 2vw, 22px); line-height: 1.5; color: #D9D9D5; max-width: 34em; margin: 28px 0 34px; }
+.hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; }
+.hero__prix { font-size: 16px; color: var(--gris); line-height: 1.35; }
+.hero__prix b { color: var(--blanc); font-weight: 600; }
+.hero__visuel { position: relative; height: 640px; }
+.hero__visuel .tel { position: absolute; width: 288px; }
+.hero__visuel .tel--avant { right: 6%; top: 0; z-index: 2; }
+.hero__visuel .tel--arriere { right: 50%; top: 92px; transform: rotate(-7deg); opacity: .55; filter: saturate(.8); }
+
+/* Téléphone */
+.tel {
+  aspect-ratio: 390 / 844; border-radius: 42px; padding: 9px; background: #1b1b1b;
+  box-shadow: 0 0 0 1px #333, 0 40px 80px -24px rgba(0,0,0,.9), 0 0 120px -30px rgba(211,47,47,.45);
+}
+.tel img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 34px; }
+
+/* La journée */
+.journee { position: relative; margin-top: 64px; padding-bottom: 28px; }
+.journee__titre { font-size: 17px; font-weight: 600; color: var(--gris); margin-bottom: 18px; }
+.journee__titre b { color: var(--blanc); }
+.journee__defile { overflow-x: auto; scrollbar-width: none; margin-inline: -16px; padding-inline: 16px; scroll-snap-type: x mandatory; scroll-padding-inline: 16px; }
+.journee__defile::-webkit-scrollbar { display: none; }
+.journee ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(9, minmax(118px, 1fr)); position: relative; }
+.journee ol::before { content: ""; position: absolute; left: 0; right: 0; top: 49px; height: 2px; background: var(--trait); }
+.journee li { scroll-snap-align: start; padding-right: 12px; position: relative; }
+.journee time { display: block; font: 400 26px/1 var(--f-titre); color: var(--blanc); }
+.journee .point {
+  display: block; width: 18px; height: 18px; margin: 13px 0 14px; border-radius: 50%;
+  background: var(--noir); border: 2px solid #444; position: relative; z-index: 1;
+}
+.journee .est-actif .point { background: var(--rouge); border-color: var(--rouge-vif); box-shadow: 0 0 0 6px rgba(211,47,47,.18), 0 0 18px rgba(255,69,69,.8); }
+.journee li span:last-child { display: block; font-size: 15.5px; line-height: 1.35; color: #CFCFCB; }
+.journee__pied { margin-top: 26px; font-size: 17px; color: var(--gris); }
+.journee__pied b { color: var(--blanc); }
+
+/* Problème */
+.probleme { background: var(--noir); }
+.probleme__grille { display: grid; grid-template-columns: .9fr 1.1fr; gap: 64px; align-items: start; }
+.probleme h2 { position: sticky; top: 40px; }
+.probleme .texte { font-size: 20px; }
+.chute { font-family: var(--f-titre); font-size: 34px; line-height: 1.1; color: var(--blanc); margin-top: 1.2em; }
+
+/* Méthode */
+.methode { background: var(--charbon); border-block: 1px solid var(--trait); position: relative; }
+.methode__tete { display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: end; margin-bottom: 72px; }
+.methode__tete .texte { font-size: 20px; color: #D9D9D5; }
+.leviers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 2px solid var(--rouge); }
+.levier { padding: 30px 30px 6px 0; }
+.levier + .levier { padding-left: 30px; border-left: 1px solid var(--trait); }
+.levier h3 { margin-bottom: 14px; }
+.levier p { font-size: 17px; color: #CFCFCB; }
+
+/* Positions */
+.positions { display: grid; grid-template-columns: 300px 1fr; gap: 64px; align-items: center; }
+.positions__liste { display: grid; gap: 14px; margin-top: 40px; }
+.position {
+  display: grid; grid-template-columns: 170px 1fr; gap: 24px; align-items: baseline;
+  padding: 26px 28px; background: var(--charbon); border: 1px solid var(--trait); border-left: 4px solid var(--rouge);
+  border-radius: 4px;
+}
+.position__nom { font: 400 25px/1.05 var(--f-titre); }
+.position__gain { display: block; font: 400 20px/1.2 var(--f-titre); color: var(--rouge-vif); margin-bottom: 6px; letter-spacing: .01em; }
+.position p { font-size: 17px; margin: 0; color: #CFCFCB; }
+
+/* Étapes */
+.etapes { background: var(--charbon); border-block: 1px solid var(--trait); }
+.etapes ol { list-style: none; padding: 0; margin: 56px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; counter-reset: e; }
+.etapes li { counter-increment: e; position: relative; padding-top: 86px; }
+.etapes li::before {
+  content: counter(e); position: absolute; top: 0; left: 0;
+  font: 400 76px/1 var(--f-titre); color: transparent; -webkit-text-stroke: 2px var(--rouge);
+}
+.etapes li h3 { margin-bottom: 10px; }
+.etapes li p { font-size: 17px; color: #CFCFCB; }
+.volume {
+  margin-top: 64px; display: grid; grid-template-columns: auto 1fr; gap: 36px; align-items: center;
+  padding: 34px 38px; border: 1px solid var(--trait); border-radius: 6px; background: var(--noir) var(--hachures);
+}
+.volume__chiffre { font: 400 clamp(64px, 9vw, 104px)/.9 var(--f-titre); color: var(--rouge-vif); }
+.volume__chiffre small { display: block; font: 600 16px/1.3 var(--f-texte); color: var(--gris); margin-top: 10px; }
+.volume p { font-size: 18px; margin: 0; }
+
+/* Fonctions */
+.fonctions__grille { display: grid; grid-template-columns: 1fr 320px 1fr; gap: 48px; align-items: center; margin-top: 64px; }
+.fonction { padding-block: 22px; border-bottom: 1px solid var(--trait); }
+.fonction:first-child { padding-top: 0; }
+.fonction:last-child { border-bottom: 0; }
+.fonction h3 { font-size: 24px; margin-bottom: 6px; }
+.fonction p { font-size: 16.5px; margin: 0; color: #CFCFCB; }
+.fonctions__tel { width: 300px; margin-inline: auto; }
+
+/* Jeu */
+.jeu { position: relative; overflow: hidden; background: radial-gradient(70% 60% at 75% 40%, rgba(227,181,60,.1), transparent 70%), var(--noir); }
+.jeu__grille { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.jeu .texte { font-size: 19px; }
+.paliers { display: flex; gap: 18px; margin: 34px 0 30px; flex-wrap: wrap; }
+.palier { text-align: center; width: 104px; }
+.palier img { width: 104px; height: 104px; border-radius: 50%; clip-path: circle(47%); mix-blend-mode: lighten; }
+.palier b { display: block; font: 400 20px/1 var(--f-titre); margin-top: 8px; }
+.palier span { font-size: 14px; color: var(--gris); }
+.jeu__visuel { position: relative; height: 620px; }
+.jeu__visuel .tel { position: absolute; width: 270px; }
+.jeu__visuel .tel:first-child { left: 0; top: 40px; transform: rotate(-4deg); }
+.jeu__visuel .tel:last-child { right: 0; top: 0; transform: rotate(3deg); }
+.rares { display: flex; gap: 10px; margin-top: 34px; }
+.rares__legende { margin: 10px 0 0; font-size: 14px; color: var(--gris); }
+.rares img { width: 112px; height: 112px; border-radius: 50%; clip-path: circle(47%); mix-blend-mode: lighten; }
+
+/* Bonus santé */
+.sante { background: var(--charbon); border-block: 1px solid var(--trait); }
+.preuves { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 60px; border-top: 1px solid var(--trait); }
+.preuve { padding: 34px 30px 10px 0; }
+.preuve + .preuve { padding-left: 30px; border-left: 1px solid var(--trait); }
+.preuve__chiffre { font: 400 clamp(54px, 6.6vw, 76px)/1 var(--f-titre); color: var(--blanc); margin-bottom: 14px; white-space: nowrap; }
+.preuve__chiffre span { color: var(--rouge-vif); }
+.preuve p { font-size: 17px; color: #CFCFCB; }
+.sante__chute { margin-top: 46px; font: 400 30px/1.15 var(--f-titre); max-width: 26em; }
+
+/* Jérôme */
+.jerome__grille { display: grid; grid-template-columns: 420px 1fr; gap: 72px; align-items: center; }
+.jerome__photo {
+  position: relative; aspect-ratio: 4 / 5; border-radius: 6px; overflow: hidden;
+  background: var(--charbon) var(--hachures); border: 1px solid var(--trait);
+  display: grid; place-items: center;
+}
+.jerome__photo img:not(.repli) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.jerome__photo .repli { width: 30%; max-width: 120px; opacity: .85; }
+.jerome .texte { font-size: 20px; }
+.signature { margin-top: 28px; display: flex; align-items: center; gap: 14px; }
+.signature img { width: 40px; }
+.signature b { display: block; font: 400 24px/1.1 var(--f-titre); }
+.signature span { font-size: 15px; color: var(--gris); }
+
+.groupe { background: var(--charbon); border-block: 1px solid var(--trait); }
+.groupe__grille { display: grid; grid-template-columns: 1fr 300px; gap: 72px; align-items: center; }
+.groupe .texte { font-size: 20px; }
+.groupe__tel { width: 300px; margin-inline: auto; }
+.inclus li b { font-weight: 700; color: var(--blanc); }
+
+/* Pour qui */
+.pourqui { background: var(--noir); }
+.pourqui__grille { display: grid; grid-template-columns: 1.25fr 1fr; gap: 28px; margin-top: 56px; }
+.liste { padding: 34px 34px 22px; border-radius: 6px; border: 1px solid var(--trait); background: var(--charbon); }
+.liste h3 { margin-bottom: 20px; }
+.liste ul { list-style: none; margin: 0; padding: 0; }
+.liste li { position: relative; padding-left: 34px; margin-bottom: 16px; font-size: 18px; line-height: 1.45; }
+.liste li::before { content: ""; position: absolute; left: 0; top: 4px; width: 20px; height: 20px; border-radius: 50%; background: var(--rouge); }
+.liste li::after { content: ""; position: absolute; left: 6px; top: 8.5px; width: 7px; height: 11px; border: solid #fff; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
+.liste--non li::before { background: #333; }
+.liste--non li::after { left: 5px; top: 13px; width: 10px; height: 0; border-width: 0 0 2.5px 0; transform: none; border-color: #999; }
+.liste--non li { color: #CFCFCB; }
+
+/* Offre */
+.offre { position: relative; background: var(--noir); }
+.offre::before { content: ""; position: absolute; inset: 0; background: var(--hachures); -webkit-mask-image: linear-gradient(180deg, transparent, #000 30%, #000 70%, transparent); mask-image: linear-gradient(180deg, transparent, #000 30%, #000 70%, transparent); pointer-events: none; }
+.offre .page { position: relative; }
+.offre__tete { text-align: center; max-width: 760px; margin: 0 auto 54px; }
+.offre__tete p { font-size: 20px; color: #D9D9D5; margin-top: 22px; }
+.offre__grille { display: grid; grid-template-columns: 1fr 1.05fr 1.05fr; gap: 22px; align-items: stretch; }
+.inclus { padding: 32px 30px; border-radius: 8px; border: 1px solid var(--trait); background: var(--charbon); }
+.inclus h3 { font-size: 26px; margin-bottom: 18px; }
+.inclus ul { list-style: none; padding: 0; margin: 0; }
+.inclus li { position: relative; padding-left: 26px; font-size: 16.5px; line-height: 1.4; margin-bottom: 12px; }
+.inclus li::before { content: ""; position: absolute; left: 2px; top: 4px; width: 6px; height: 11px; border: solid var(--rouge-vif); border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
+.formule {
+  position: relative; display: flex; flex-direction: column; padding: 34px 30px 30px; border-radius: 8px;
+  border: 1px solid var(--trait); background: var(--charbon);
+}
+.formule--annuel { border: 2px solid var(--rouge); background: linear-gradient(180deg, rgba(211,47,47,.13), rgba(211,47,47,0) 55%), var(--charbon); }
+.formule__badge {
+  position: absolute; top: -15px; left: 28px; padding: 6px 12px; border-radius: 4px;
+  background: var(--rouge); font: 600 14px/1 var(--f-texte); letter-spacing: .02em;
+}
+.formule h3 { font-size: 30px; }
+.formule__prix { font: 400 66px/1 var(--f-titre); margin: 18px 0 4px; }
+.formule__prix small { font: 600 19px/1 var(--f-texte); color: var(--gris); margin-left: 4px; }
+.formule__detail { font-size: 16.5px; color: #CFCFCB; margin-bottom: 26px; flex: 1; }
+.formule__detail b { color: var(--blanc); }
+.formule .btn { width: 100%; }
+.barre { text-decoration: line-through; color: var(--gris); }
+.garantie {
+  display: grid; grid-template-columns: auto 1fr; gap: 30px; align-items: center;
+  max-width: 860px; margin: 40px auto 0; padding: 28px 32px; border-radius: 8px;
+  border: 1px dashed rgba(227,181,60,.55); background: rgba(227,181,60,.05);
+}
+.garantie__sceau {
+  width: 112px; height: 112px; border-radius: 50%; display: grid; place-content: center; text-align: center;
+  border: 3px solid var(--or); box-shadow: 0 0 0 6px var(--noir), 0 0 0 7px rgba(227,181,60,.5); transform: rotate(-8deg);
+}
+.garantie__sceau b { font: 400 50px/.9 var(--f-titre); color: var(--or); }
+.garantie__sceau span { font-size: 14px; font-weight: 700; letter-spacing: .08em; color: var(--or); }
+.garantie h3 { font-size: 28px; margin-bottom: 8px; }
+.garantie p { margin: 0; font-size: 17px; color: #D9D9D5; }
+.rassure { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 34px; margin-top: 34px; font-size: 16px; color: var(--gris); }
+.rassure span { display: inline-flex; align-items: center; gap: 9px; }
+.rassure svg { width: 18px; height: 18px; flex: none; stroke: var(--rouge-vif); }
+.ancre { max-width: 760px; margin: 56px auto 0; display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--trait); border-radius: 8px; overflow: hidden; }
+.ancre div { padding: 22px 20px; text-align: center; }
+.ancre div + div { border-left: 1px solid var(--trait); }
+.ancre b { display: block; font: 400 25px/1.1 var(--f-titre); margin-bottom: 4px; }
+.ancre span { font-size: 15px; color: var(--gris); }
+.ancre .nous { background: rgba(211,47,47,.12); }
+.ancre .nous b { color: var(--rouge-vif); }
+
+/* FAQ */
+.faq__grille { display: grid; grid-template-columns: .8fr 1.2fr; gap: 64px; align-items: start; }
+.faq details { border-bottom: 1px solid var(--trait); }
+.faq details:first-child { border-top: 1px solid var(--trait); }
+.faq summary {
+  cursor: pointer; list-style: none; padding: 22px 46px 22px 0; position: relative;
+  font-size: 20px; font-weight: 600; line-height: 1.35;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: ""; position: absolute; right: 8px; top: 30px; width: 12px; height: 12px; border: solid var(--rouge-vif); border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); transition: transform .2s; }
+.faq details[open] summary::after { transform: rotate(-135deg); top: 35px; }
+.faq details p { font-size: 17.5px; color: #CFCFCB; margin: -4px 0 24px; max-width: 60ch; }
+
+/* Final */
+.final { text-align: center; background: var(--charbon) var(--hachures); border-top: 1px solid var(--trait); }
+.final h2 { max-width: 15em; margin-inline: auto; font-size: clamp(42px, 7vw, 82px); }
+.final .btn { margin-top: 38px; }
+.final__prix { margin-top: 16px; font-size: 16px; color: var(--gris); }
+.ps { max-width: 620px; margin: 64px auto 0; text-align: left; font-size: 18px; color: #D9D9D5; border-left: 3px solid var(--rouge); padding-left: 22px; }
+.ps b { font-family: var(--f-titre); font-weight: 400; font-size: 22px; margin-right: 6px; color: var(--blanc); }
+
+/* Sources & pied */
+.pied { padding: 64px 0 120px; border-top: 1px solid var(--trait); font-size: 15px; color: var(--gris); }
+.sources summary { cursor: pointer; font-weight: 600; color: var(--blanc); font-size: 16px; }
+.sources ol { margin: 18px 0 0; padding-left: 22px; columns: 2; column-gap: 40px; font-size: 13.5px; line-height: 1.5; }
+.sources li { break-inside: avoid; margin-bottom: 8px; }
+.sources li:target { color: var(--blanc); }
+.sources a { color: var(--gris); }
+.pied__bas { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px 30px; margin-top: 44px; padding-top: 26px; border-top: 1px solid var(--trait); }
+.pied__liens { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+.pied__liens a { text-decoration: none; }
+.pied__liens a:hover { color: var(--blanc); }
+.avertissement { margin-top: 22px; font-size: 13.5px; max-width: 80ch; }
+
+/* Barre mobile */
+.barre-cta {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; display: none;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: rgba(13,13,13,.94);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-top: 1px solid var(--trait);
+  align-items: center; justify-content: space-between; gap: 14px;
+  transform: translateY(110%); transition: transform .25s ease;
+}
+.barre-cta.est-visible { transform: none; }
+.barre-cta p { margin: 0; font-size: 14.5px; line-height: 1.25; color: var(--gris); }
+.barre-cta p b { display: block; color: var(--blanc); font: 400 19px/1.1 var(--f-titre); letter-spacing: .02em; }
+.barre-cta .btn { min-height: 50px; padding: 0 22px; font-size: 20px; }
+
+/* Responsive */
+@media (max-width: 980px) {
+  .groupe__grille { grid-template-columns: 1fr; gap: 40px; }
+  .groupe__tel { width: 250px; }
+  .hero__grille, .probleme__grille, .methode__tete, .positions, .jeu__grille, .jerome__grille, .faq__grille, .pourqui__grille { grid-template-columns: 1fr; }
+  .probleme__grille, .jerome__grille, .faq__grille { gap: 36px; }
+  .probleme h2 { position: static; }
+  .hero__visuel { height: 560px; max-width: 520px; width: 100%; margin-inline: auto; }
+  .hero__visuel .tel { width: 250px; }
+  .hero__visuel .tel--avant { right: 8%; }
+  .hero__visuel .tel--arriere { right: auto; left: 4%; }
+  .methode__tete { gap: 28px; margin-bottom: 48px; }
+  .leviers, .preuves { grid-template-columns: 1fr; }
+  .levier, .levier + .levier, .preuve, .preuve + .preuve { padding: 26px 0 8px; border-left: 0; }
+  .levier + .levier, .preuve + .preuve { border-top: 1px solid var(--trait); }
+  .positions { gap: 8px; }
+  .positions .tel { display: none; }
+  .fonctions__grille { grid-template-columns: 1fr; gap: 8px; }
+  .fonctions__tel { order: -1; width: 260px; margin-bottom: 30px; }
+  .jeu__visuel { height: 520px; max-width: 520px; width: 100%; margin-inline: auto; }
+  .jeu__visuel .tel { width: 230px; }
+  .jerome__photo { max-width: 420px; }
+  .offre__grille { grid-template-columns: 1fr 1fr; }
+  .inclus { grid-column: 1 / -1; }
+  .inclus ul { columns: 2; column-gap: 28px; }
+  .inclus li { break-inside: avoid; }
+  .barre-cta { display: flex; }
+  .sources ol { columns: 1; }
+}
+@media (max-width: 640px) {
+  .garantie { grid-template-columns: 1fr; justify-items: start; gap: 18px; padding: 24px 22px; }
+  .garantie__sceau { width: 96px; height: 96px; }
+  body { font-size: 17px; }
+  section { padding-block: 72px; }
+  .hero { padding-top: 104px; }
+  .hero__actions .btn { width: 100%; }
+  .hero__visuel { height: 470px; margin-top: 8px; }
+  .hero__visuel .tel { width: 206px; border-radius: 32px; padding: 7px; }
+  .hero__visuel .tel img { border-radius: 26px; }
+  .hero__visuel .tel--avant { right: 0; }
+  .hero__visuel .tel--arriere { left: 0; top: 70px; }
+  .journee { margin-top: 40px; }
+  .entete__lien { font-size: 15px; }
+  .probleme .texte, .methode__tete .texte, .jerome .texte, .groupe .texte { font-size: 18px; }
+  .chute { font-size: 29px; }
+  .position { grid-template-columns: 1fr; gap: 8px; padding: 22px 20px; }
+  .etapes ol { grid-template-columns: 1fr; gap: 34px; margin-top: 40px; }
+  .etapes li { padding-top: 0; padding-left: 70px; }
+  .etapes li::before { font-size: 56px; }
+  .volume { grid-template-columns: 1fr; gap: 18px; padding: 26px 22px; }
+  .jeu__visuel { height: 420px; }
+  .jeu__visuel .tel { width: 182px; border-radius: 30px; padding: 7px; }
+  .jeu__visuel .tel img { border-radius: 24px; }
+  .palier, .palier img { width: 92px; }
+  .palier img { height: 92px; }
+  .rares { gap: 6px; }
+  .rares img { width: 78px; height: 78px; }
+  .sante__chute { font-size: 25px; }
+  .offre__grille { grid-template-columns: 1fr; }
+  .formule--annuel { order: -1; }
+  .inclus ul { columns: 1; }
+  .ancre { grid-template-columns: 1fr; }
+  .ancre div + div { border-left: 0; border-top: 1px solid var(--trait); }
+  .liste { padding: 26px 22px 12px; }
+  .faq summary { font-size: 18px; }
+  .final .btn { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="entete">
+  <div class="page">
+    <a class="marque" href="#" aria-label="Iso-IMPACT, accueil"><img src="img/pr.png" alt="" width="30" height="30"><span class="marque__nom">ISO-<span>IMPACT</span></span></a>
+    <a class="entete__lien" href="https://app.physiquerush.com">Déjà membre ? Se connecter</a>
+  </div>
+</header>
+
+<main>
+
+<!-- HERO -->
+<section class="hero" id="haut">
+  <div class="page">
+    <div class="hero__grille">
+      <div>
+        <h1>Prends du muscle dans les temps morts de ta journée.</h1>
+        <p class="hero__lede">Le temps que ton café coule ou que tes pâtes cuisent, tu as largement de quoi faire travailler un muscle à fond. Iso-IMPACT te guide pour transformer ces petits moments perdus en contractions isométriques maximales, sans matériel, en tenue de ville, où que tu sois.</p>
+        <div class="hero__actions">
+          <a class="btn" href="#offre">Je commence maintenant</a>
+          <p class="hero__prix"><b>Dès 10,33 € par mois.</b><br>Satisfait ou remboursé pendant 30 jours.</p>
+        </div>
+      </div>
+      <div class="hero__visuel" aria-hidden="true">
+        <div class="tel tel--arriere"><img src="img/app-effort.webp" alt="" width="600" height="1299"></div>
+        <div class="tel tel--avant"><img src="img/app-accueil.webp" alt="" width="600" height="1299"></div>
+      </div>
+    </div>
+
+    <div class="journee">
+      <p class="journee__titre"><b>Des temps morts, ta journée en est pleine.</b> En voici quelques-uns.</p>
+      <div class="journee__defile">
+        <ol id="journee">
+          <li><time>7h10</time><span class="point"></span><span>Le café coule</span></li>
+          <li><time>8h25</time><span class="point"></span><span>Les enfants cherchent leurs chaussures</span></li>
+          <li><time>10h05</time><span class="point"></span><span>La visio qui ne démarre pas</span></li>
+          <li><time>12h30</time><span class="point"></span><span>Le micro-ondes tourne</span></li>
+          <li><time>14h15</time><span class="point"></span><span>Ton appel est en attente</span></li>
+          <li><time>16h40</time><span class="point"></span><span>Le fichier met trois plombes à charger</span></li>
+          <li><time>18h50</time><span class="point"></span><span>Les pâtes cuisent</span></li>
+          <li><time>20h10</time><span class="point"></span><span>Le bain des enfants se remplit</span></li>
+          <li><time>21h35</time><span class="point"></span><span>La pub avant ta série</span></li>
+        </ol>
+      </div>
+      <p class="journee__pied">Inutile de bloquer une heure dans ton agenda : <b>il suffit de récupérer les minutes que tu perds déjà.</b></p>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLÈME -->
+<section class="probleme">
+  <div class="page probleme__grille">
+    <h2>Entre le boulot et les enfants, la salle est passée à la trappe.</h2>
+    <div class="texte">
+      <p>Je connais bien ce scénario. Tu te motives, tu trouves un programme à quatre séances par semaine, et pendant trois ou quatre semaines tout roule. Puis arrivent un dossier urgent, un enfant malade ou un simple rhume, et le programme s'arrête là, sans que tu aies vraiment décidé d'arrêter.</p>
+      <p>Le problème ne vient pas de toi. Une séance d'une heure, avec le trajet et le vestiaire, ce sont presque deux heures à caser, et pour beaucoup d'hommes actifs ce n'est tout simplement plus possible. Le manque de temps est d'ailleurs le premier frein au sport cité par les adultes. <a class="ref" href="#src-ishii">Ishii 2009</a></p>
+      <p>Le souci, c'est que ton corps continue d'avancer pendant ce temps. La part de muscle dans ton poids commence à baisser dès la vingtaine, et la perte devient vraiment visible vers la fin de la quarantaine, surtout aux jambes. <a class="ref" href="#src-janssen">Janssen 2000</a></p>
+      <p class="chute">Plutôt que de courir après du temps que tu n'as pas, autant changer de méthode.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MÉTHODE -->
+<section class="methode">
+  <div class="page">
+    <div class="methode__tete">
+      <h2>Ton muscle ne sait pas si tu pousses une barre de 100 kg ou un cadre de porte.</h2>
+      <div class="texte">
+        <p>Ce qu'il ressent, c'est <span class="fort">l'intensité de ton effort.</span> C'est tout le principe de l'isométrie maximale : tu pousses, tu tires ou tu serres de toutes tes forces contre quelque chose qui ne bouge pas, comme un mur, une table ou ton propre corps. Il n'y a aucun mouvement, mais la tension dans le muscle est énorme et tu la tiens sans relâcher.</p>
+      </div>
+    </div>
+    <div class="leviers">
+      <div class="levier">
+        <h3>Une tension maximale</h3>
+        <p>La tension mécanique est le premier signal qui pousse un muscle à grossir. <a class="ref" href="#src-wackerhage">Wackerhage 2019</a> Quand tu forces vraiment à fond, ton corps est obligé de recruter toutes tes fibres, y compris les plus puissantes, et pour ça tu n'as besoin d'aucune charge.</p>
+      </div>
+      <div class="levier">
+        <h3>Un garrot naturel</h3>
+        <p>Dès que tu dépasses 40 % de ta force, le muscle écrase ses propres vaisseaux et le sang n'y circule presque plus. <a class="ref" href="#src-zwarts">Zwarts 1988</a> En tenant la contraction, tu crées un vrai stress métabolique, et plus ce manque d'oxygène est marqué, plus le muscle grossit. <a class="ref" href="#src-goto">Goto 2019</a></p>
+      </div>
+      <div class="levier">
+        <h3>La bonne durée</h3>
+        <p>Dans une étude de 14 semaines, des contractions tenues 30 secondes ont fait progresser la force de 55 %, presque deux fois plus que des contractions courtes, et ce sont les seules à avoir fait grossir le muscle. <a class="ref" href="#src-schott">Schott 1995</a> Un Iso-IMPACT dure 40 secondes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POSITIONS -->
+<section class="positions-section">
+  <div class="page positions">
+    <div class="tel"><img src="img/app-effort-droite.webp" alt="Écran d'effort Iso-IMPACT : décompte, côté droit, encouragement en direct" width="600" height="1299" loading="lazy"></div>
+    <div>
+      <h2>L'appli te fait travailler sous tous les angles, et chacun apporte quelque chose.</h2>
+      <div class="positions__liste">
+        <div class="position">
+          <div class="position__nom">Muscle étiré</div>
+          <div><span class="position__gain">Celui qui fait le plus de volume</span><p>En 12 semaines, des ischio-jambiers entraînés en position étirée ont gagné 14,1 % de muscle, contre 9,3 % en position courte. <a class="ref" href="#src-maeo">Maeo 2021</a></p></div>
+        </div>
+        <div class="position">
+          <div class="position__nom">Angle intermédiaire</div>
+          <div><span class="position__gain">Celui où tu es le plus fort</span><p>C'est à cet angle que tu développes ta force maximale. Chez des hommes déjà entraînés, garder la tension en milieu d'amplitude a fait grossir le triceps de 48,7 % en 8 semaines, contre 28,2 % en amplitude complète. <a class="ref" href="#src-goto">Goto 2019</a></p></div>
+        </div>
+        <div class="position">
+          <div class="position__nom">Muscle contracté</div>
+          <div><span class="position__gain">Celui qui brûle</span><p>Muscle raccourci à fond, son épaisseur a augmenté de 5 à 9 % en 8 semaines <a class="ref" href="#src-alegre">Alegre 2014</a> et la force a progressé de 13,4 % sur la fin du mouvement, là où tu verrouilles. <a class="ref" href="#src-noorkoiv">Noorkõiv 2014</a> Comme le muscle y tient plus longtemps, c'est aussi la position idéale pour enchaîner les impacts dans la journée. <a class="ref" href="#src-kooistra">Kooistra 2005</a></p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMENT ÇA MARCHE -->
+<section class="etapes">
+  <div class="page">
+    <h2>Concrètement, comment ça se passe ?</h2>
+    <ol>
+      <li>
+        <h3>Tu lances l'impact</h3>
+        <p>Dès que tu as un moment, tu appuies sur le bouton. L'appli choisit l'exercice parmi 45 et fait tourner les 7 zones (pecs, dos, épaules, biceps, triceps, abdos, jambes), donc tu n'as jamais à te demander quoi faire.</p>
+      </li>
+      <li>
+        <h3>Tu te mets en place</h3>
+        <p>Tu as 5 secondes pour te positionner, avec la démo sous les yeux. Un bip marque chaque seconde, puis le signal de départ tombe.</p>
+      </li>
+      <li>
+        <h3>Tu pousses à fond</h3>
+        <p>L'appli compte, vibre et t'encourage pendant tout l'effort, sans que tu aies besoin de regarder l'écran. Au gong, c'est terminé et tu reprends ta journée comme si de rien n'était.</p>
+      </li>
+    </ol>
+    <div class="volume">
+      <div class="volume__chiffre">12 séries<small>par zone et par semaine, sans même y penser</small></div>
+      <p>À partir de 10 séries par muscle et par semaine, la prise de muscle moyenne grimpe à 9,8 %, contre 5,4 % en dessous de 5 séries. <a class="ref" href="#src-schoenfeld17">Schoenfeld 2017</a> Et que tes séries soient regroupées ou étalées dans la journée, le résultat est le même à volume égal. <a class="ref" href="#src-schoenfeld19">Schoenfeld 2019</a> <span class="fort">Ce qui compte, c'est ce que tu accumules sur la semaine, bien plus que la durée de chaque séance.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- FONCTIONS -->
+<section class="fonctions">
+  <div class="page">
+    <h2>Tout est fait pour que tu n'aies plus à réfléchir.</h2>
+    <div class="fonctions__grille">
+      <div>
+        <div class="fonction"><h3>Un seul bouton</h3><p>L'appli décide à ta place et répartit le travail entre toutes les zones de ton corps.</p></div>
+        <div class="fonction"><h3>Un coach dans ta poche</h3><p>Bips, vibrations et encouragements toutes les 6 secondes : le son te guide du début à la fin.</p></div>
+        <div class="fonction"><h3>Gauche, puis droite</h3><p>Quand un exercice se fait d'un côté, l'appli enchaîne d'elle-même sur l'autre pour éviter tout déséquilibre.</p></div>
+      </div>
+      <div class="tel fonctions__tel"><img src="img/app-accueil.webp" alt="Écran d'accueil Iso-IMPACT : niveau, jauge du jour, exercice proposé et bouton Lancer l'impact" width="600" height="1299" loading="lazy"></div>
+      <div>
+        <div class="fonction"><h3>Une alternative en une touche</h3><p>Si l'endroit ne s'y prête pas ou qu'un exercice te gêne, tu en changes en gardant la même zone.</p></div>
+        <div class="fonction"><h3>Ça marche partout</h3><p>L'appli fonctionne sans réseau et garde l'écran allumé, que tu sois au bureau, au sous-sol ou dans le train.</p></div>
+        <div class="fonction"><h3>Tu sais quand t'arrêter</h3><p>La jauge du jour t'indique ta zone optimale, pour que chaque effort compte.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JEU -->
+<section class="jeu">
+  <div class="page jeu__grille">
+    <div>
+      <h2>Tu vas vite vouloir ta médaille d'or du jour.</h2>
+      <div class="paliers">
+        <div class="palier"><img src="img/medaille-jour-bronze.webp" alt="" loading="lazy"><b>Bronze</b><span>4 impacts</span></div>
+        <div class="palier"><img src="img/medaille-jour-argent.webp" alt="" loading="lazy"><b>Argent</b><span>8 impacts</span></div>
+        <div class="palier"><img src="img/medaille-jour-or.webp" alt="" loading="lazy"><b>Or</b><span>12 impacts</span></div>
+      </div>
+      <div class="texte">
+        <p>Chaque jour a ses trois paliers, ce qui te garantit une petite victoire même quand ta journée est chargée. Au-dessus, il y a des niveaux, des séries et <span class="fort">100 trophées répartis en 5 raretés</span>, du bronze au légendaire. Certains tombent en une semaine, d'autres te demanderont plusieurs années.</p>
+        <p>Ce côté jeu a un vrai effet sur ta régularité. Une méta-analyse de 16 essais randomisés, menée sur 2 407 personnes, montre que les points, les niveaux et les récompenses font bouger davantage, avec en moyenne 1 610 pas de plus par jour. <a class="ref" href="#src-mazeas">Mazeas 2022</a></p>
+        <p>Et si tu rates une journée, l'appli ne te pénalise pas. Il faut en moyenne 66 jours pour qu'une habitude devienne automatique, et un oubli de temps en temps ne l'empêche pas de s'installer. <a class="ref" href="#src-lally">Lally 2010</a></p>
+      </div>
+      <div class="rares" aria-hidden="true">
+        <img src="img/medaille-bras.webp" alt="" loading="lazy">
+        <img src="img/medaille-pecs.webp" alt="" loading="lazy">
+        <img src="img/medaille-jambes.webp" alt="" loading="lazy">
+        <img src="img/medaille-progression.webp" alt="" loading="lazy">
+      </div>
+      <p class="rares__legende">Quelques-uns des 100 trophées à débloquer.</p>
+    </div>
+    <div class="jeu__visuel">
+      <div class="tel"><img src="img/app-trophees.webp" alt="Écran des trophées Iso-IMPACT" width="600" height="1299" loading="lazy"></div>
+      <div class="tel"><img src="img/app-trophee-diamant.webp" alt="Trophée diamant Précis débloqué, à partager" width="600" height="1299" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SANTÉ -->
+<section class="sante">
+  <div class="page">
+    <h2>En prime, tes tendons deviennent plus solides et tes douleurs se calment.</h2>
+    <div class="texte" style="margin-top:26px;font-size:19px;color:#D9D9D5">
+      <p>Si tu traînes un genou qui tire, une épaule qui grince ou un tendon d'Achille capricieux, sache que l'isométrie fait partie des outils préférés des kinés. Elle permet de charger un tendon sans passer par l'amplitude qui fait mal.</p>
+    </div>
+    <div class="preuves">
+      <div class="preuve">
+        <div class="preuve__chiffre"><span>+</span>36 %</div>
+        <p>C'est le gain de raideur du tendon d'Achille en 14 semaines, avec des contractions à 90 % de la force maximale. À 55 %, le tendon n'avait pas bougé, d'où l'intérêt de pousser à fond. <a class="ref" href="#src-arampatzis">Arampatzis 2007</a></p>
+      </div>
+      <div class="preuve">
+        <div class="preuve__chiffre">7 <span>›</span> 0,2</div>
+        <p>Chez des volleyeurs souffrant du tendon rotulien, la douleur au squat est passée de 7 à 0,2 sur 10 juste après des contractions isométriques, et l'effet tenait encore 45 minutes plus tard. <a class="ref" href="#src-rio">Rio 2015</a></p>
+      </div>
+      <div class="preuve">
+        <div class="preuve__chiffre"><span>−</span>8,2</div>
+        <p>C'est la baisse moyenne de la tension au repos, en mmHg. Sur 270 essais, l'isométrie est l'entraînement qui la fait le plus baisser, devant l'endurance et la musculation classique. <a class="ref" href="#src-edwards">Edwards 2023</a></p>
+      </div>
+    </div>
+    <p class="sante__chute">Tu choisis l'angle qui ne fait pas mal, et tu peux forcer quand même.</p>
+  </div>
+</section>
+
+<!-- JÉRÔME -->
+<section class="jerome">
+  <div class="page jerome__grille">
+    <div class="jerome__photo">
+      <img class="repli" src="img/pr.png" alt="" aria-hidden="true">
+      <img src="img/jerome.jpg" alt="Jérôme, kiné et coach sportif, créateur d'Iso-IMPACT" loading="lazy" onerror="this.remove()">
+    </div>
+    <div>
+      <h2>Qui suis-je pour te proposer ça ?</h2>
+      <div class="texte" style="margin-top:28px">
+        <p>Moi, c'est Jérôme. J'ai 39 ans, deux enfants, et sûrement un agenda qui ressemble au tien.</p>
+        <p>Je suis kiné, coach sportif diplômé STAPS, et je pratique le judo. Construire du muscle et remettre sur pied des tendons ou des articulations douloureuses, c'est mon métier.</p>
+        <p>Quand les enfants sont arrivés, j'ai perdu ce que perdent presque tous les pères : du temps, beaucoup de temps. L'envie, elle, était toujours là. Alors j'ai pris l'outil que je maîtrise le mieux, l'isométrie maximale, et je l'ai glissé dans les petits trous de mes journées.</p>
+        <p class="fort">Iso-IMPACT, c'est simplement cette méthode, mise dans ton téléphone.</p>
+      </div>
+      <div class="signature">
+        <img src="img/pr.png" alt="" width="40" height="40">
+        <div><b>Jérôme</b><span>Kiné et coach sportif, fondateur de PhysiqueRUSH</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GROUPE -->
+<section class="groupe">
+  <div class="page groupe__grille">
+    <div>
+      <h2>Et tu n'avances jamais seul.</h2>
+      <div class="texte" style="margin-top:28px">
+        <p>Ton abonnement t'ouvre les portes du groupe privé Iso-IMPACT, sur WhatsApp. J'y passe tous les jours, 7 jours sur 7. Un doute sur une position, une gêne au genou, une question sur ta récupération : tu la poses, et je te réponds.</p>
+        <p>Tu y retrouves aussi d'autres hommes qui ont la même vie que toi. On y partage ses trophées et ses progrès, on se relance les jours où la motivation baisse, et ça change tout sur la durée.</p>
+        <p class="fort">Une appli dans ta poche, un kiné qui te suit, et une équipe autour de toi.</p>
+      </div>
+    </div>
+    <div class="tel groupe__tel"><img src="img/app-groupe.webp" alt="Accès au groupe privé WhatsApp Iso-IMPACT depuis l'appli : suivi 7 jours sur 7" width="600" height="1299" loading="lazy"></div>
+  </div>
+</section>
+
+<!-- POUR QUI -->
+<section class="pourqui">
+  <div class="page">
+    <h2>C'est fait pour toi ?</h2>
+    <div class="pourqui__grille">
+      <div class="liste">
+        <h3>Oui, si…</h3>
+        <ul>
+          <li>Tu veux prendre du muscle, mais la salle ne rentre plus dans ton emploi du temps.</li>
+          <li>Tu as passé la trentaine et tu sens que ton corps commence à perdre du terrain.</li>
+          <li>Tu veux un entraînement simple, où tu n'as qu'à appuyer et pousser.</li>
+          <li>Une tendinite ou une articulation douloureuse te gêne en musculation classique.</li>
+          <li>Tu t'entraînes déjà et tu veux ajouter du volume sans ajouter de séances.</li>
+        </ul>
+      </div>
+      <div class="liste liste--non">
+        <h3>Non, si…</h3>
+        <ul>
+          <li>Tu cherches quelque chose de tranquille, parce qu'ici on pousse à 100 %.</li>
+          <li>Tu espères des résultats sans fournir d'effort.</li>
+          <li>Tu as deux heures par jour à passer en salle. Iso-IMPACT a été pensé pour ceux qui ne les ont pas.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OFFRE -->
+<section class="offre" id="offre">
+  <div class="page">
+    <div class="offre__tete">
+      <h2>Ton accès Iso-IMPACT</h2>
+      <p>Pour moins cher qu'un café par jour, sans salle, sans trajet et sans matériel à acheter.</p>
+    </div>
+    <div class="offre__grille">
+      <div class="inclus">
+        <h3>Ce que tu reçois</h3>
+        <ul>
+          <li>L'appli Iso-IMPACT sur ton téléphone, iPhone ou Android</li>
+          <li><b>Le groupe privé WhatsApp : suivi 7 jours sur 7 avec moi et entraide entre membres</b></li>
+          <li>45 exercices sur 7 zones, en rotation automatique</li>
+          <li>La démo vidéo de chaque exercice</li>
+          <li>Le coach dans ta poche : sons, vibrations, encouragements</li>
+          <li>Niveaux, séries et 100 trophées à collectionner et partager</li>
+          <li>Une appli qui fonctionne sans réseau</li>
+          <li>Les nouveaux exercices et fonctions, ajoutés au fil des mois</li>
+        </ul>
+      </div>
+      <div class="formule">
+        <h3>Mensuel</h3>
+        <div class="formule__prix">14,99 €<small>/mois</small></div>
+        <p class="formule__detail">Soit <b>50 centimes par jour</b>, et tu arrêtes quand tu veux.</p>
+        <a class="btn btn--creux" href="https://buy.stripe.com/dRm00ibH48tAggk7Ss7kc00">Je prends le mensuel</a>
+      </div>
+      <div class="formule formule--annuel">
+        <span class="formule__badge">Près de 4 mois offerts</span>
+        <h3>Annuel</h3>
+        <div class="formule__prix">124 €<small>/an</small></div>
+        <p class="formule__detail">Soit <b>10,33 € par mois</b>, ou 34 centimes par jour. Au lieu de <span class="barre">179,88 €</span>, tu économises 55,88 €.</p>
+        <a class="btn" href="https://buy.stripe.com/00w4gyfXk4dk3tyb4E7kc01">Je prends l'annuel</a>
+      </div>
+    </div>
+
+    <div class="garantie">
+      <div class="garantie__sceau" aria-hidden="true"><b>30</b><span>jours</span></div>
+      <div>
+        <h3>Satisfait ou remboursé pendant 30 jours</h3>
+        <p>Teste Iso-IMPACT pendant un mois. Si tu n'es pas convaincu, envoie-moi simplement un email à contact@physiquerush.com dans les 30 jours qui suivent ton premier paiement, et je te rembourse intégralement, sans te demander de justification. Tout le risque est pour moi.</p>
+      </div>
+    </div>
+
+    <div class="rassure">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Paiement sécurisé par Stripe</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>Sans engagement, résiliable en 1 clic</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Ton accès par email sous 24 h</span>
+    </div>
+    <div class="ancre">
+      <div><b>20 à 40 €</b><span>par mois pour une salle, sans compter les trajets</span></div>
+      <div><b>40 à 60 €</b><span>la séance avec un coach perso</span></div>
+      <div class="nous"><b>34 centimes</b><span>par jour avec Iso-IMPACT</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="page faq__grille">
+    <h2>Les questions qu'on me pose souvent</h2>
+    <div>
+      <details>
+        <summary>Sans charges, est-ce que ça fait vraiment du muscle ?</summary>
+        <p>Oui, parce que ton muscle réagit à la tension qu'il subit, et non à l'objet contre lequel tu pousses. Une contraction maximale tenue sans relâcher combine la tension mécanique et le stress métabolique, les deux moteurs de la prise de muscle. Les études citées sur cette page l'ont mesuré sur des périodes de 6 à 14 semaines.</p>
+      </details>
+      <details>
+        <summary>Honnêtement, je n'ai pas le temps.</summary>
+        <p>C'est justement pour toi que l'appli existe. Tu n'as aucun créneau à bloquer, tu utilises les temps morts que tu as déjà : le café, le micro-ondes, un appel en attente.</p>
+      </details>
+      <details>
+        <summary>J'ai peur d'abandonner, comme d'habitude.</summary>
+        <p>Tu décroches une médaille dès 4 impacts, tu as une série à faire grimper et des trophées à débloquer, sans aucun malus si tu rates un jour. L'effet du jeu sur la régularité a été démontré par 16 essais randomisés, et le groupe privé est là pour te relancer les jours sans.</p>
+      </details>
+      <details>
+        <summary>J'ai mal au genou ou à l'épaule. Je peux quand même le faire ?</summary>
+        <p>Oui, et c'est même l'un des gros avantages de l'isométrie : tu choisis l'angle qui ne fait pas mal et tu peux forcer quand même. Si un exercice te gêne, une touche te propose une alternative pour la même zone. En cas de doute sur ta situation, demande l'avis de ton médecin.</p>
+      </details>
+      <details>
+        <summary>Je fais déjà de la muscu. Qu'est-ce que ça m'apporte ?</summary>
+        <p>Du volume en plus sans séance en plus, des tendons plus solides, et du travail à des angles que tu touches rarement en salle. Pour le muscle, c'est le total de ta semaine qui compte.</p>
+      </details>
+      <details>
+        <summary>Je ne saurai pas quoi faire.</summary>
+        <p>L'appli choisit pour toi, te montre la démo et te guide au son. Tu n'as qu'à appuyer sur le bouton.</p>
+      </details>
+      <details>
+        <summary>Et si j'ai une question en cours de route ?</summary>
+        <p>Tu la poses dans le groupe privé WhatsApp. J'y réponds tous les jours, 7 jours sur 7, et les autres membres sont là aussi pour partager leur expérience.</p>
+      </details>
+      <details>
+        <summary>Comment je reçois l'appli ? Elle marche sur iPhone ?</summary>
+        <p>Après ton paiement, tu reçois ton accès par email sous 24 h. Il suffit d'ouvrir le lien sur ton téléphone et d'ajouter l'appli à ton écran d'accueil. Elle fonctionne sur iPhone comme sur Android, sans passer par un store.</p>
+      </details>
+      <details>
+        <summary>Et si ça ne me plaît pas ?</summary>
+        <p>Tu as 30 jours pour te faire ton avis. Si tu n'es pas convaincu, un email à contact@physiquerush.com suffit et je te rembourse intégralement.</p>
+      </details>
+      <details>
+        <summary>Je peux arrêter quand je veux ?</summary>
+        <p>Oui, il n'y a aucun engagement. Tu résilies en un clic depuis ton espace abonné, sans email à envoyer ni justification à donner.</p>
+      </details>
+      <details>
+        <summary>Est-ce qu'on transpire ?</summary>
+        <p>Très peu. Tu fais ton impact en tenue de ville et tu retournes à ta réunion sans passer par la douche.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section class="final">
+  <div class="page">
+    <h2>Demain, tu auras encore des temps morts. Fais-en du muscle.</h2>
+    <a class="btn" href="#offre">Je commence maintenant</a>
+    <p class="final__prix">Dès 10,33 € par mois, satisfait ou remboursé pendant 30 jours.</p>
+    <div class="ps">
+      <p><b>P.S.</b>Si tu as lu jusqu'ici, c'est que l'idée te parle. Tu ne prends aucun risque : tu as 30 jours pour être remboursé et tu peux résilier en un clic. Dans le meilleur des cas, tu prends du muscle sans rien changer à ta vie. Le vrai risque, c'est de laisser filer encore une année.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="pied">
+  <div class="page">
+    <details class="sources">
+      <summary>Les études citées sur cette page</summary>
+      <ol>
+        <li id="src-alegre">Alegre LM et al. Effects of isometric training on the knee extensor moment–angle relationship and vastus lateralis muscle architecture. Eur J Appl Physiol, 2014.</li>
+        <li id="src-arampatzis">Arampatzis A, Karamanidis K, Albracht K. Adaptational responses of the human Achilles tendon by modulation of the applied cyclic strain magnitude. J Exp Biol, 2007.</li>
+        <li id="src-edwards">Edwards JJ et al. Exercise training and resting blood pressure: a large-scale pairwise and network meta-analysis of randomised controlled trials. Br J Sports Med, 2023.</li>
+        <li id="src-goto">Goto M et al. Partial range of motion exercise is effective for facilitating muscle hypertrophy and function through sustained intramuscular hypoxia in young trained men. J Strength Cond Res, 2019.</li>
+        <li id="src-ishii">Ishii K et al. Sociodemographic variation in the perception of barriers to exercise among Japanese adults. J Epidemiol, 2009.</li>
+        <li id="src-janssen">Janssen I et al. Skeletal muscle mass and distribution in 468 men and women aged 18–88 yr. J Appl Physiol, 2000.</li>
+        <li id="src-kooistra">Kooistra RD, de Ruiter CJ, de Haan A. Muscle activation and blood flow do not explain the muscle length-dependent variation in quadriceps isometric endurance. J Appl Physiol, 2005.</li>
+        <li id="src-lally">Lally P et al. How are habits formed: modelling habit formation in the real world. Eur J Soc Psychol, 2010.</li>
+        <li id="src-maeo">Maeo S et al. Greater hamstrings muscle hypertrophy but similar damage protection after training at long versus short muscle lengths. Med Sci Sports Exerc, 2021.</li>
+        <li id="src-mazeas">Mazeas A et al. Evaluating the effectiveness of gamification on physical activity: systematic review and meta-analysis of randomized controlled trials. J Med Internet Res, 2022.</li>
+        <li id="src-noorkoiv">Noorkõiv M, Nosaka K, Blazevich AJ. Neuromuscular adaptations associated with knee joint angle-specific force change. Med Sci Sports Exerc, 2014.</li>
+        <li id="src-rio">Rio E et al. Isometric exercise induces analgesia and reduces inhibition in patellar tendinopathy. Br J Sports Med, 2015.</li>
+        <li id="src-schoenfeld17">Schoenfeld BJ, Ogborn D, Krieger JW. Dose-response relationship between weekly resistance training volume and increases in muscle mass. J Sports Sci, 2017.</li>
+        <li id="src-schoenfeld19">Schoenfeld BJ, Grgic J, Krieger J. How many times per week should a muscle be trained to maximize muscle hypertrophy? J Sports Sci, 2019.</li>
+        <li id="src-schott">Schott J, McCully K, Rutherford OM. The role of metabolites in strength training. II. Short versus long isometric contractions. Eur J Appl Physiol, 1995.</li>
+        <li id="src-wackerhage">Wackerhage H et al. Stimuli and sensors that initiate skeletal muscle hypertrophy following resistance exercise. J Appl Physiol, 2019.</li>
+        <li id="src-zwarts">Zwarts MJ, Arendt-Nielsen L. The influence of force and circulation on average muscle fibre conduction velocity during local muscle fatigue. Eur J Appl Physiol, 1988.</li>
+      </ol>
+    </details>
+    <p class="avertissement">Iso-IMPACT ne remplace pas un avis médical. Pendant l'effort, souffle et ne bloque jamais ta respiration. En cas d'hypertension non contrôlée, de problème cardiaque ou de douleur inexpliquée, demande l'avis de ton médecin avant de commencer.</p>
+    <div class="pied__bas">
+      <span>© <span id="annee">2026</span> PhysiqueRUSH. Iso-IMPACT est une appli PhysiqueRUSH.</span>
+      <nav class="pied__liens" aria-label="Informations légales">
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="cgv.html">CGV</a>
+        <a href="confidentialite.html">Confidentialité</a>
+        <a href="mailto:contact@physiquerush.com">contact@physiquerush.com</a>
+        <a href="https://app.physiquerush.com">Se connecter</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<div class="barre-cta" id="barre-cta">
+  <p><b>Iso-IMPACT</b>Dès 10,33 € par mois</p>
+  <a class="btn" href="#offre">Commencer</a>
+</div>
+
+<script>
+(() => {
+  document.getElementById("annee").textContent = new Date().getFullYear();
+
+  // La journée s'allume, point par point
+  const points = [...document.querySelectorAll("#journee li")];
+  const calme = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (calme) points.forEach(p => p.classList.add("est-actif"));
+  else points.forEach((p, i) => setTimeout(() => p.classList.add("est-actif"), 700 + i * 220));
+
+  // Barre d'achat mobile : visible après le hero, cachée sur l'offre
+  const barre = document.getElementById("barre-cta");
+  const hero = document.querySelector(".hero__actions");
+  const offre = document.getElementById("offre");
+  let apresHero = false, surOffre = false;
+  const maj = () => barre.classList.toggle("est-visible", apresHero && !surOffre);
+  new IntersectionObserver(([e]) => { apresHero = !e.isIntersecting; maj(); }).observe(hero);
+  new IntersectionObserver(([e]) => { surOffre = e.isIntersecting; maj(); }, { threshold: .15 }).observe(offre);
+})();
+</script>
+</body>
+</html>
